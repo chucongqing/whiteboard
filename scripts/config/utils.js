@@ -14,6 +14,7 @@ const configSchema = require("./config-schema.json");
  * @return {Object}
  */
 function getConfig(path) {
+    console.log("get config from path", path);
     return yaml.safeLoad(fs.readFileSync(path, "utf8"));
 }
 

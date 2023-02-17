@@ -1,5 +1,5 @@
 import keymage from "keymage";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import whiteboard from "./whiteboard";
 import keybinds from "./keybinds";
 import Picker from "vanilla-picker";
@@ -45,10 +45,12 @@ if (title) {
 }
 
 const subdir = getSubDir();
+/** @type {Socket} */
 let signaling_socket;
 
 function main() {
-    signaling_socket = io("", { path: subdir + "/ws-api" }); // Connect even if we are in a subdir behind a reverse proxy
+    // Connect even if we are in a subdir behind a reverse proxy
+    signaling_socket = io("", { path: subdir + "/ws-api" });
 
     signaling_socket.on("connect", function () {
         console.log("Websocket connected!");
@@ -143,7 +145,7 @@ function showBasicAlert(html, newOptions) {
 }
 
 function initWhiteboard() {
-    $(document).ready(function () {
+    jQuery(function () {
         // by default set in readOnly mode
         ReadOnlyService.activateReadOnlyMode();
 
@@ -185,7 +187,14 @@ function initWhiteboard() {
             }
         );
 
-        $(window).resize(function () {
+        // $(window).resize(function () {
+        //     signaling_socket.emit("updateScreenResolution", {
+        //         at: accessToken,
+        //         windowWidthHeight: { w: $(window).width(), h: $(window).height() },
+        //     });
+        // });
+
+        $(window).on("resize", function () {
             signaling_socket.emit("updateScreenResolution", {
                 at: accessToken,
                 windowWidthHeight: { w: $(window).width(), h: $(window).height() },

@@ -1,5 +1,3 @@
-const util = require("util");
-
 const { getDefaultConfig, getConfig, deepMergeConfigs, isConfigValid } = require("./utils");
 
 const { getArgs } = require("./../utils");
@@ -11,6 +9,7 @@ let userConfig = {};
 
 if (cliArgs["config"]) {
     userConfig = getConfig(cliArgs["config"]);
+    console.log("Using config file: " + cliArgs["config"]);
 }
 
 const config = deepMergeConfigs(defaultConfig, userConfig);
@@ -77,6 +76,7 @@ if (!isConfigValid(config, true)) {
 }
 
 if (!process.env.JEST_WORKER_ID) {
+    const util = require("node:util");
     console.info(util.inspect(config, { showHidden: false, depth: null, colors: true }));
 }
 

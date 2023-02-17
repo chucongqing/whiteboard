@@ -1,5 +1,5 @@
 const path = require("path");
-
+var audit = require("express-requests-logger");
 const config = require("./config/config");
 const ReadOnlyBackendService = require("./services/ReadOnlyBackendService");
 const WhiteboardInfoBackendService = require("./services/WhiteboardInfoBackendService");
@@ -32,6 +32,11 @@ function startBackendServer(port) {
 
     //Expose static folders
     app.use(express.static(path.join(__dirname, "..", "dist")));
+    app.use(
+        audit({
+            logger: console,
+        })
+    );
     app.use("/uploads", express.static(path.join(__dirname, "..", "public", "uploads")));
 
     /**
@@ -79,7 +84,7 @@ function startBackendServer(port) {
         }
     });
 
-    /**
+    /*
      * @api {get} /api/getReadOnlyWid Get the readOnlyWhiteboardId
      * @apiDescription This returns the readOnlyWhiteboardId for a given WhiteboardId
      * @apiName getReadOnlyWid
@@ -208,6 +213,7 @@ function startBackendServer(port) {
         }
 
         if (accessToken === "" || accessToken == at) {
+            console.log("1111111111111111111");
             const broadcastTo = (wid) => io.compress(false).to(wid).emit("drawToWhiteboard", query);
             // broadcast to current whiteboard
             broadcastTo(wid);
@@ -326,7 +332,7 @@ function startBackendServer(port) {
 
         socket.on("drawToWhiteboard", function (content) {
             if (!whiteboardId || ReadOnlyBackendService.isReadOnly(whiteboardId)) return;
-
+            console.log("drawToWhiteboard: ", content);
             content = escapeAllContentStrings(content);
             content = purifyEncodedStrings(content);
 

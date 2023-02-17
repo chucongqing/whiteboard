@@ -28,6 +28,7 @@ function fileDatabasePath(wid) {
 
 module.exports = {
     handleEventsAndData: function (content) {
+        console.log("whiteboard server handleEventsAndData", content);
         var tool = content["t"]; //Tool witch is used
         var wid = content["wid"]; //whiteboard ID
         var username = content["username"];
@@ -127,6 +128,7 @@ module.exports = {
         if (config.backend.enableFileDatabase) {
             //Save whiteboard to file
             if (!saveDelay[wid]) {
+                console.log("save to file db");
                 saveDelay[wid] = true;
                 setTimeout(function () {
                     saveDelay[wid] = false;
