@@ -1,5 +1,6 @@
 const devServerConfig = {
     hot: true,
+    host: "0.0.0.0",
     proxy: {
         // proxies for the backend
         "/api": "http://localhost:3000",

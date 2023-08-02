@@ -8,6 +8,7 @@
     "esModuleInterop": true,
     "declarationDir": "types",
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "rootDir": ".",
     "baseUrl": "./src",
     "outDir": "dist"

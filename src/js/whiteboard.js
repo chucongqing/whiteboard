@@ -34,59 +34,6 @@ const ToolsEnum = {
     redo: "redo",
 };
 
-/**
- * @typeof {Object} BufferContent
- * @prop {ToolsEnum} t
- * @prop {Object} data
- * @prop {string} color
- * @prop {string} username
- * @prop {object} thickness
- * @prop {number} drawId
- */
-
-/**
- * @typedef {object} Whiteboard
- * @property {HTMLCanvasElement} canvas
- * @property {CanvasRenderingContext2D} ctx
- * @property {string} drawcolor
- * @property {HTMLElement} previousToolHtmlElem
- * @property {ToolsEnum} tool
- * @property {number} thickness
- * @property {Point} prevPos
- * @property {Point} startCoords
- * @property {object} viewCoords
- * @property {number} viewCoords.x
- * @property {number} viewCoords.y
- * @property {boolean} drawFlag
- * @property {GlobalCompositeOperation} oldGCO
- * @property {boolean} mouseover
- * @property {string} lineCap
- * @property {any} backgroundGrid
- * @property {HTMLCanvasElement} canvasElement
- * @property {HTMLElement} cursorContainer
- * @property {HTMLElement} imgContainer
- * @property {HTMLOrSVGElement} svgContainer
- * @property {object} mouseOverlay
- * @property {object} ownCursor
- * @property {object} penSmoothLastCoords
- * @property {SVGLineElement} svgLine
- * @property {SVGRectElement} svgRect
- * @property {SVGCircleElement} svgCirle
- * @property {BufferContent[]} drawBuffer
- * @property {BufferContent[]} undoBuffer
- * @property {number} drawId
- * @property {boolean} imgDragActive
- * @property {boolean} latestActiveTextBoxId
- *  @prop {(BufferContent)=>void} sendFunction
- * @property {object} settings
- * @property {string} settings.whiteboardId
- * @property {string} settings.username
- * @property {Function} settings.sendFunction
- * @property {string} settings.backgroundGridUrl
- * @property {number} lastPointerSentTime
- * @property {number} lastPointerPosition
- */
-
 /** @type {Whiteboard} */
 const whiteboard = {
     canvas: null,
@@ -132,9 +79,6 @@ const whiteboard = {
         backgroundGridUrl: "./images/gb_grid.png",
     },
     lastPointerSentTime: 0,
-    /**
-     * @type Point
-     */
     lastPointerPosition: new Point(0, 0),
     loadWhiteboard: function (whiteboardContainer, newSettings) {
         const svgns = "http://www.w3.org/2000/svg";
