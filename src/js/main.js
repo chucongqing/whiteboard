@@ -10,7 +10,7 @@ import InfoService from "./services/InfoService";
 import { getSubDir } from "./utils";
 import ConfigService from "./services/ConfigService";
 import { v4 as uuidv4 } from "uuid";
-
+import verto from "@xswitch/rtc";
 const pdfjsLib = require("pdfjs-dist");
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -48,9 +48,35 @@ const subdir = getSubDir();
 /** @type {Socket} */
 let signaling_socket;
 
+const callbacks = {
+    onMessage: () => {},
+    onWSLogin: (v, success) => {
+        if (success) {
+            main1();
+        } else {
+            console.error("login failed");
+        }
+    },
+    onWSClose: () => {},
+};
 function main() {
+    const vid = window.document.createElement("video");
+    vid.id = "videoTag";
+    vid.style.display = "none";
+    document.body.appendChild(vid);
+    verto.connect(
+        {
+            login: "1017@xswitch.cn",
+            passwd: "XSwitch.cn/6753997",
+            socketUrl: "ws://192.168.3.80:8081/ws",
+            tag: "videoTag",
+        },
+        callbacks
+    );
+}
+
+function main1() {
     // Connect even if we are in a subdir behind a reverse proxy
-    signaling_socket = io("", { path: subdir + "/ws-api" });
 
     signaling_socket.on("connect", function () {
         console.log("Websocket connected!");
@@ -165,6 +191,7 @@ function initWhiteboard() {
                 //     if (whiteboard.drawFlag) return;
                 // }
                 content["at"] = accessToken;
+                //how to send data to server
                 signaling_socket.emit("drawToWhiteboard", content);
                 InfoService.incrementNbMessagesSent();
             },
